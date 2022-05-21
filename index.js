@@ -1,7 +1,14 @@
 const express=require('express')
 const app=express()
+const cookieParser=require('cookie-parser')
 const port=8000
 const expressLayouts=require('express-ejs-layouts')
+const db=require('./config/mongoose')
+const bodyParser=require('body-parser')
+
+app.use(bodyParser.urlencoded({extended:false}))
+
+app.use(cookieParser())
 
 app.use(express.static('./assets'))
 
