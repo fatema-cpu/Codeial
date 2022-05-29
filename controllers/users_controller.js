@@ -1,20 +1,28 @@
 const User=require('../models/user')
 
+// manual auth 
+// module.exports.profile=function(req,res){
+//     if(req.cookies.user_id){
+//         User.findById(req.cookies.user_id,function(err,user){
+//             if(user){
+//                 return res.render('user_profile',{
+//                     title:'User profile',
+//                     user:user
+//                 })
+//             }
+//             return res.redirect('/users/sign-in')
+//         })
+//     }
+//     else{
+//         return res.redirect('/users/sign-in')
+//     }
+// }
+
+// passport profile page
 module.exports.profile=function(req,res){
-    if(req.cookies.user_id){
-        User.findById(req.cookies.user_id,function(err,user){
-            if(user){
-                return res.render('user_profile',{
-                    title:'User profile',
-                    user:user
-                })
-            }
-            return res.redirect('/users/sign-in')
-        })
-    }
-    else{
-        return res.redirect('/users/sign-in')
-    }
+    res.render('user_profile',{
+        title:"Codeial | Profile"
+    })
 }
 
 // render the sign up page
@@ -56,31 +64,37 @@ module.exports.create=function(req,res){
     })
 }
 
-// sign in and create a session for the user
+// sign in and create a session for the user manual auth
+// module.exports.createSession=function(req,res){
+//     User.findOne({email:req.body.email},function(err,user){
+//         if(err){
+//             console.log("error in finding user in sign in!!")
+//             return
+//         }
+//         // handle user found
+//         if(user){
+//             // handle password which doesn't match
+//             if(user.password!=req.body.password){
+//                 return res.redirect('back')
+//             }
+//             // handle session creation
+//             res.cookie('user_id',user.id)
+//             return res.redirect('/users/profile')
+//         }
+//         // handle user not found
+//         else{
+//             return res.redirect('back')
+//         }
+//     })
+// }
+
+
+// create session using passport
 module.exports.createSession=function(req,res){
-    User.findOne({email:req.body.email},function(err,user){
-        if(err){
-            console.log("error in finding user in sign in!!")
-            return
-        }
-        // handle user found
-        if(user){
-            // handle password which doesn't match
-            if(user.password!=req.body.password){
-                return res.redirect('back')
-            }
-            // handle session creation
-            res.cookie('user_id',user.id)
-            return res.redirect('/users/profile')
-        }
-        // handle user not found
-        else{
-            return res.redirect('back')
-        }
-    })
+    return res.redirect('/')
 }
 
-module.exports.signOut=function(req,res){
-    res.cookie('user_id','')
-    res.redirect('/users/sign-in')
-}
+// module.exports.signOut=function(req,res){
+//     res.cookie('user_id','')
+//     res.redirect('/users/sign-in')
+// }
