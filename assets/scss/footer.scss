@@ -1,0 +1,26 @@
+footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  background-color: grey;
+  color: white;
+  font-size: larger;
+  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
+  
+  p {
+    margin-left: 6px;
+  }
+  ul {
+    overflow: hidden;
+    list-style: none;
+    li {
+        margin-bottom: 6px;
+      a {
+        text-decoration: none;
+        
+        color: white;
+      }
+    }
+  }
+}

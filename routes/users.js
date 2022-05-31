@@ -14,7 +14,7 @@ router.post('/create-session',passport.authenticate(
     'local',
     {failureRedirect:'/users/sign-in'}
 ),userController.createSession)
-
+router.get('/sign-out',userController.destroySession)
 // manual auth routes start
 // router.post('/create-session',userController.createSession)
 // router.post('/sign-out',userController.signOut)

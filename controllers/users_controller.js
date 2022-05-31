@@ -1,6 +1,6 @@
-const User=require('../models/user')
+const User = require("../models/user");
 
-// manual auth 
+// manual auth
 // module.exports.profile=function(req,res){
 //     if(req.cookies.user_id){
 //         User.findById(req.cookies.user_id,function(err,user){
@@ -19,50 +19,55 @@ const User=require('../models/user')
 // }
 
 // passport profile page
-module.exports.profile=function(req,res){
-    res.render('user_profile',{
-        title:"Codeial | Profile"
-    })
-}
+module.exports.profile = function (req, res) {
+  res.render("user_profile", {
+    title: "Codeial | Profile",
+  });
+};
 
 // render the sign up page
-module.exports.signUp=function(req,res){
-    res.render('user_sign_up',{
-        title:"Codeial | SignUp"
-    })
-}
+module.exports.signUp = function (req, res) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/profile");
+  }
+  res.render("user_sign_up", {
+    title: "Codeial | SignUp",
+  });
+};
 
 // render the signin page
-module.exports.signIn=function(req,res){
-    res.render('user_sign_in',{
-        title:'Codeial | SignIn'
-    })
-}
+module.exports.signIn = function (req, res) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/profile");
+  }
+  res.render("user_sign_in", {
+    title: "Codeial | SignIn",
+  });
+};
 
 // get the sign up data
-module.exports.create=function(req,res){
-    if(req.body.password != req.body.confirm_password){
-        return res.redirect('back')
+module.exports.create = function (req, res) {
+  if (req.body.password != req.body.confirm_password) {
+    return res.redirect("back");
+  }
+  User.findOne({ email: req.body.email }, function (err, user) {
+    if (err) {
+      console.log("error in finding user in sign up!!");
+      return;
     }
-    User.findOne({email:req.body.email},function(err,user){
-        if(err){
-            console.log("error in finding user in sign up!!")
-            return
+    if (!user) {
+      User.create(req.body, function (err, user) {
+        if (err) {
+          console.log("error in creating user in sign up!!");
+          return;
         }
-        if(!user){
-            User.create(req.body,function(err,user){
-                if(err){
-                    console.log("error in creating user in sign up!!")
-                    return 
-                }
-                return res.redirect('/users/sign-in')
-            })
-        }
-        else{
-            res.redirect('back')
-        }
-    })
-}
+        return res.redirect("/users/sign-in");
+      });
+    } else {
+      res.redirect("back");
+    }
+  });
+};
 
 // sign in and create a session for the user manual auth
 // module.exports.createSession=function(req,res){
@@ -88,13 +93,23 @@ module.exports.create=function(req,res){
 //     })
 // }
 
-
 // create session using passport
-module.exports.createSession=function(req,res){
-    return res.redirect('/')
-}
+module.exports.createSession = function (req, res) {
+  return res.redirect("/");
+};
 
 // module.exports.signOut=function(req,res){
 //     res.cookie('user_id','')
 //     res.redirect('/users/sign-in')
 // }
+
+module.exports.destroySession = function (req, res) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+
+  // return res.redirect('/');
+};
