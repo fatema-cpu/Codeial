@@ -18,6 +18,11 @@
       <li>
         <p>
           <%= post.content %>
+          <% if (locals.user && locals.user.id==post.user.id){ %>
+            <small>
+              <a href="/posts/destroy/<%= post.id %>">X</a>
+            </small>
+            <% } %>
           <br />
           <small> <%= post.user.name %> </small>
         </p>
@@ -35,8 +40,10 @@
                   <li>
                     <p>
                       <%= comment.content %>
+                      
                       <br>
                       <small><%= comment.user.name %></small>
+                      
                     </p>
                   </li>
                   <% } %>
