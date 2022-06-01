@@ -20,9 +20,13 @@ const User = require("../models/user");
 
 // passport profile page
 module.exports.profile = function (req, res) {
-  res.render("user_profile", {
-    title: "Codeial | Profile",
-  });
+  User.findById(req.params.id,function(err,user){
+    res.render("user_profile", {
+      title: "Codeial | Profile",
+      profile_user:user
+    });
+  })
+  
 };
 
 // render the sign up page

@@ -1,5 +1,5 @@
 const Post=require('../models/post')
-
+const User=require('../models/user')
 module.exports.home=function(req,res){
     // console.log(req.cookies)
     // res.cookie('id',22)
@@ -20,9 +20,12 @@ module.exports.home=function(req,res){
         }
     })
     .exec(function(err,posts){
+    User.find({},function(err,users){
         res.render('home',{
             title:"Codeial | home",
-            posts:posts
+            posts:posts,
+            all_users:users
         })
     })
+ })
 }
