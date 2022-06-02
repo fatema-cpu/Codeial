@@ -4,10 +4,16 @@
         <li>
             <a href="/">Home</a>
         </li>
+        <% if(locals.user){ %>
         <li>
             <a href="/users/profile/<%= user.id %>">
                 Profile
             </a>
         </li>
+        <%} else{ %>
+            <li>
+            <a href="/users/sign-in">Profile</a>
+        </li>
+        <% } %>
     </ul>
 </footer>
