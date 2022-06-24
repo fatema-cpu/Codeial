@@ -20,14 +20,20 @@ const path=require('path')
 // }
 
 // passport profile page
-module.exports.profile = function (req, res) {
-  User.findById(req.params.id,function(err,user){
+module.exports.profile =async function (req, res) {
+  try{
+    let user=await User.findById(req.params.id)
+    let populated_user=await User.findById(req.user).populate('friendships')
     res.render("user_profile", {
       title: "Codeial | Profile",
-      profile_user:user
+      profile_user:user,
+      populated_user:populated_user
     });
-  })
-  
+  }
+  catch(err){
+    console.log("Error", err);
+    return;
+  }
 };
 
 module.exports.update=async function(req,res){
@@ -48,7 +54,7 @@ module.exports.update=async function(req,res){
         user.name=req.body.name
         user.email=req.body.email
         if(req.file){
-          if(user.avatar){
+          if(user.avatar && fs.existsSync(path.join(__dirname, "..", user.avtar))){
             fs.unlinkSync(path.join(__dirname,'..',user.avatar))
           }
           // this is saving the path of the uploaded file in the field of the user
@@ -58,7 +64,8 @@ module.exports.update=async function(req,res){
         return res.redirect('back')
       })
     }catch(err){
-
+console.log("Error", err);
+    return;
     }
   }else{
     return res.status(401).send('Unauthorized')

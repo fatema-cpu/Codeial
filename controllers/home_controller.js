@@ -19,14 +19,35 @@ module.exports.home = async function (req, res) {
         populate: {
           path: "user",
         },
+        populate:{
+          path:"likes"
+        }
       })
-      
+      .populate('likes')
     let users = await User.find({})
     .sort('-createdAt');
+    let user
+      if(req.user){
+        user =await User.findById(req.user._id)
+        .populate({
+          path:"friendships",
+          populate:{
+            path:"from_user"
+          }
+        })
+        .populate({
+          path:"friendships",
+          populate:{
+            path:"to_user"
+          }
+        })
+      }
+    
     return res.render("home", {
       title: "Codeial | home",
       posts: posts,
       all_users: users,
+      user:user
     });
   } catch (err) {
     console.log("Error: ", err);

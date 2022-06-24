@@ -19,9 +19,9 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="/css/layout.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
-    <link rel="stylesheet" href="/css/header.css" />
+    <link type="text/css" rel="stylesheet" href="<%= assetPath('css/layout.css') %>" />
+    <link type="text/css" rel="stylesheet" href="<%= assetPath('css/footer.css') %>" />
+    <link type="text/css" rel="stylesheet" href="<%= assetPath('css/header.css') %>" />
     <%- style %>
   </head>
   <body>
@@ -29,7 +29,8 @@
 
     <main id="layout-main"><%- body %></main>
 
-    <%- include('_footer'); %> <%- script %>
+    <%- include('_footer'); %>
+    <%- script %>
 
     <script>
       <% if(flash.success && flash.success.length>0) { %>
